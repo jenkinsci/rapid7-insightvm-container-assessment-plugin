@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>3.17</version>
+    <relativePath />
+  </parent>
+
+  <artifactId>rapid7-insightvm-container-assessment</artifactId>
+  <version>1.0.3-SNAPSHOT</version>
+  <packaging>hpi</packaging>
+
+  <name>InsightVM Container Image Scanner</name>
+  <description>Scan your Docker images using Rapid7 InsightVM</description>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/Rapid7+InsightVM+Container+Image+Scanner</url>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/insightvm-container-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/insightvm-container-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/insightvm-container-plugin</url>
+  </scm>
+
+  <properties>
+    <java.level>8</java.level>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <findbugs.failOnError>false</findbugs.failOnError>
+    <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
+    <jenkins.version>2.60.3</jenkins.version>
+    <!-- regular dependencies -->
+    <commons.codec.version>1.11</commons.codec.version>
+    <commons.compress.version>1.13</commons.compress.version>
+    <commons.io.version>2.6</commons.io.version>
+    <docker.image.analyzer.version>0.1.1</docker.image.analyzer.version>
+    <feign.version>10.2.0</feign.version>
+    <freemarker.version>2.3.28</freemarker.version>
+    <jackson.version>2.9.8</jackson.version>
+    <okhttp.version>3.13.1</okhttp.version>
+    <!-- jenkins plugin dependencies -->
+    <credentials.version>2.1.16</credentials.version>
+    <docker-commons.version>1.13</docker-commons.version>
+    <plain-credentials.version>1.4</plain-credentials.version>
+    <scm-api.version>1.3</scm-api.version>
+    <symbol-annotation.version>1.7</symbol-annotation.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jenkins-ci.tools</groupId>
+        <artifactId>maven-hpi-plugin</artifactId>
+        <configuration>
+          <pluginFirstClassLoader>true</pluginFirstClassLoader>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-compress</artifactId>
+        <version>${commons.compress.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons.codec.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons.io.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jenkins-ci</groupId>
+        <artifactId>symbol-annotation</artifactId>
+        <version>${symbol-annotation.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>scm-api</artifactId>
+        <version>${scm-api.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- JSON processing: jackson -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jdk8</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- HTTP client: Netflix Feign -->
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-core</artifactId>
+      <version>${feign.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-jackson</artifactId>
+      <version>${feign.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-okhttp</artifactId>
+      <version>${feign.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-slf4j</artifactId>
+      <version>${feign.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>credentials</artifactId>
+      <version>${credentials.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>docker-commons</artifactId>
+      <version>${docker-commons.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>plain-credentials</artifactId>
+      <version>${plain-credentials.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>${freemarker.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.rapid7.docker</groupId>
+      <artifactId>docker-image-analyzer</artifactId>
+      <version>${docker.image.analyzer.version}</version>
+    </dependency>
+
+    <!-- For pipeline unit tests -->
+    <!--<dependency>-->
+      <!--<groupId>org.jenkins-ci.plugins.workflow</groupId>-->
+      <!--<artifactId>workflow-aggregator</artifactId>-->
+      <!--<version>2.5</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
+
+  </dependencies>
+</project>

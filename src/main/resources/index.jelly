@@ -1,0 +1,7 @@
+<?jelly escape-by-default='true'?>
+<!--
+  This view is used to render the installed plugins page.
+-->
+<div>
+  The Rapid7 InsightVM Container Assessment plugin. Visit <a href="https://rapid7.com" target="_blank">rapid7.com</a> for more information.
+</div>

@@ -1,0 +1,24 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <f:section title="${%Options}">
+    <f:entry title="${%option.failOnPluginError}" field="failOnPluginError">
+      <f:checkbox default="true" />
+    </f:entry>
+    <f:entry title="${%option.treatWarningsAsErrors}" field="treatWarningsAsErrors">
+      <f:checkbox />
+    </f:entry>
+    <f:entry title="${%options.imageId}" field="imageId">
+      <f:textbox checkMethod="post"/>
+    </f:entry>
+  </f:section>
+  <f:section title="${%ThresholdRules}">
+    <f:block>
+      <f:repeatableHeteroProperty field="thresholdRules" hasHeader="true" oneEach="true"/>
+    </f:block>
+  </f:section>
+  <f:section title="${%NameRules}">
+    <f:block>
+      <f:repeatableHeteroProperty field="nameRules" hasHeader="true"/>
+    </f:block>
+  </f:section>
+</j:jelly>

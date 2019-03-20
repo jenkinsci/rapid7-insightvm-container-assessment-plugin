@@ -1,0 +1,12 @@
+com.rapid7.sdlc.plugin.ruleset.CriterionName
+com.rapid7.sdlc.plugin.ruleset.Rule
+com.rapid7.sdlc.plugin.ruleset.property.CriticalVulnerabilities
+com.rapid7.sdlc.plugin.ruleset.property.VulnerabilityCategory
+com.rapid7.sdlc.plugin.ruleset.property.CvssV2Score
+com.rapid7.sdlc.plugin.ruleset.property.MalwareKits
+com.rapid7.sdlc.plugin.ruleset.property.IntegerPropertyEvaluator
+com.rapid7.sdlc.plugin.ruleset.property.PackageName
+com.rapid7.sdlc.plugin.ruleset.property.SevereVulnerabilities
+com.rapid7.sdlc.plugin.ruleset.property.ExploitableVulnerabilities
+com.rapid7.sdlc.plugin.ruleset.property.VulnerabilityTitle
+com.rapid7.sdlc.plugin.ruleset.property.ModerateVulnerabilities
