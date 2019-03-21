@@ -15,7 +15,14 @@
 
   <name>InsightVM Container Image Scanner</name>
   <description>Scan your Docker images using Rapid7 InsightVM</description>
-  <url>https://wiki.jenkins-ci.org/display/JENKINS/Rapid7+InsightVM+Container+Image+Scanner</url>
+  <url>https://wiki.jenkins.io/display/JENKINS/Rapid7+InsightVM+Container+Assessment+Plugin</url>
+
+  <developers>
+    <developer>
+      <id>rapid7</id>
+      <name>Rapid7</name>
+    </developer>
+  </developers>
 
   <licenses>
     <license>
@@ -25,9 +32,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git://github.com/jenkinsci/insightvm-container-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:jenkinsci/insightvm-container-plugin.git</developerConnection>
-    <url>https://github.com/jenkinsci/insightvm-container-plugin</url>
+    <connection>scm:git:git://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/rapid7-insightvm-container-assessment-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin</url>
   </scm>
 
   <properties>

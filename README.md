@@ -1,5 +1,7 @@
 # InsightVM Container Image Scanner Jenkins Plugin
 
+[![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins/rapid7-insightvm-container-assessment-plugin/master)](https://ci.jenkins.io/job/Plugins/job/rapid7-insightvm-container-assessment-plugin/job/master/)
+
 Jenkins plugin for InsightVM Container Image Assessment
 
 More information about InsightVM can be found here: https://www.rapid7.com/products/insightvm/
