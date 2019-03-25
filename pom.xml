@@ -45,10 +45,10 @@
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
     <jenkins.version>2.60.3</jenkins.version>
     <!-- regular dependencies -->
-    <commons.codec.version>1.11</commons.codec.version>
-    <commons.compress.version>1.13</commons.compress.version>
+    <commons.codec.version>1.12</commons.codec.version>
+    <commons.compress.version>1.18</commons.compress.version>
     <commons.io.version>2.6</commons.io.version>
-    <docker.image.analyzer.version>0.1.1</docker.image.analyzer.version>
+    <docker.image.analyzer.version>0.1.2</docker.image.analyzer.version>
     <feign.version>10.2.0</feign.version>
     <freemarker.version>2.3.28</freemarker.version>
     <jackson.version>2.9.8</jackson.version>
@@ -123,6 +123,12 @@
 
   <dependencies>
     <!-- JSON processing: jackson -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
