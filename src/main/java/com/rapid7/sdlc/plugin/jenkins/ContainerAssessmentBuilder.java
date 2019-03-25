@@ -33,6 +33,7 @@ import hudson.FilePath;
 import hudson.Functions;
 import hudson.Launcher;
 import hudson.ProxyConfiguration;
+import hudson.Util;
 import hudson.model.AbstractProject;
 import hudson.model.Cause;
 import hudson.model.Item;
@@ -79,7 +80,7 @@ import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import static com.cloudbees.plugins.credentials.CredentialsMatchers.withId;
-import static com.google.common.base.Strings.nullToEmpty;
+import static hudson.Util.fixNull;
 import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -318,7 +319,7 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
   @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
   private void submitMetrics(final Run<?, ?> build, Map<Rule, RuleResult> ruleResults, ImageId imageId, Status buildStatus, String systemId) {
     @SuppressWarnings("ConstantConditions")
-    final String versionNumber = nullToEmpty(Jenkins.getVersion().toString());
+    final String versionNumber = fixNull(Jenkins.getVersion().toString());
     NewImageBuild buildResource = new NewImageBuild()
         .artifactId(imageId.getString())
         .number(String.valueOf(build.getNumber()))
