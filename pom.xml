@@ -83,6 +83,7 @@
         <artifactId>maven-hpi-plugin</artifactId>
         <configuration>
           <pluginFirstClassLoader>true</pluginFirstClassLoader>
+          <minimumJavaVersion>${java.level}</minimumJavaVersion>
         </configuration>
       </plugin>
     </plugins>
