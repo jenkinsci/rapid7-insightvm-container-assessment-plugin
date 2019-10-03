@@ -164,6 +164,7 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
     rules.forEach(ruleDescriptor -> rawRules.add(new Rule(ruleDescriptor.getActionObject(), ruleDescriptor.getPropertyEvaluator())));
   }
 
+  @SuppressFBWarnings("REC_CATCH_EXCEPTION")
   @Override
   public void perform(@Nonnull Run<?, ?> build, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener listener) {
     final PrintStream logger = listener.getLogger();
