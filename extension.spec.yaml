@@ -1,8 +1,8 @@
-extension: standalone
+extension: integration
 product: [insightvm]
-name: Rapid7_InsightVM_Container_Image_Scanner
-title: Rapid7 InsightVM Container Image Scanner
-description: This Jenkins plugin provides a mechanism for scanning Docker containers with InsightVM.
+name: insightvm_jenkins_container_image_scanner_plugin
+title: InsightVM Jenkins Container Image Scanner Plugin
+description: This Jenkins plugin provides a mechanism for scanning Docker containers with InsightVM
 version: 1.0.6
 vendor: rapid7
 status: []
@@ -12,7 +12,7 @@ hub_tags:
   keywords: [docker, container, scanning]
   features: []
 resources:
-  source_url:
-  license_url:
-  vendor_url:
+  source_url: https://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin
+  license_url: https://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin/blob/master/LICENSE
+  vendor_url: https://jenkins.io/
   external_url: https://plugins.jenkins.io/rapid7-insightvm-container-assessment
