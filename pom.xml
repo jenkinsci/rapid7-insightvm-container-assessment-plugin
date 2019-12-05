@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>rapid7-insightvm-container-assessment</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.8-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <name>InsightVM Container Image Scanner</name>
@@ -35,7 +35,7 @@
     <connection>scm:git:git://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/rapid7-insightvm-container-assessment-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin</url>
-    <tag>rapid7-insightvm-container-assessment-1.0.7</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
