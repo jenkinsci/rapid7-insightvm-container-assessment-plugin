@@ -10,9 +10,8 @@ The Rapid7 InsightVM Container Image Scanner is a Jenkins plugin that provides a
 
 # Requirements
 
-The plugin requires the use of a Rapid7 Insight platform API key. Instructions for generating this key are available [here](https://insightvm.help.rapid7.com/docs/containers-cicd-plugin#section-generate-the-rapid7-api-key).
-
-This plugin must also be installed in the user's Jenkins instance with administrative privileges. The plugin is available via Jenkins [here](https://plugins.jenkins.io/rapid7-insightvm-container-assessment).
+* Rapid7 Platform API Key
+* Installation of plugin in the user's Jenkins instance with administrative privileges
 
 # Documentation
 
@@ -100,3 +99,4 @@ _This plugin does not contain any troubleshooting information._
 ## References
 
 * [Jenkins plugin page](https://plugins.jenkins.io/rapid7-insightvm-container-assessment)
+* [Create a Rapid7 Platform API Key](https://insight.help.rapid7.com/docs/managing-platform-api-keys)
