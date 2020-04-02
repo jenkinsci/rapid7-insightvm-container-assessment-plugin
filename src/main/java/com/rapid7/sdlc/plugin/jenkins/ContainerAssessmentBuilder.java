@@ -325,7 +325,7 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
         .number(String.valueOf(build.getNumber()))
         .platform("JENKINS")
         .policy(ruleResults == null || ruleResults.isEmpty() ? new Policy() : new Policy().rules(ruleResults.entrySet().stream().map(this::convert).collect(toList())))
-        .projectId(build.getParent().getDisplayName())
+        .projectId(build.getParent().getFullDisplayName())
         .start(build.getTime().toInstant().toString())
         .status(buildStatus.name())
         .systemId(systemId)
@@ -427,7 +427,7 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
     Optional<String> startedBy = build.getCauses().stream().map(Cause::getShortDescription).findFirst();
 
     try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(reportFile), StandardCharsets.UTF_8)) {
-      String result = reportService.generateAssessmentReport(build.getParent().getDisplayName(), build.getNumber(), startedBy.orElse("Unknown Cause"), imageId, imageName, image, ruleResults, Functions.getResourcePath() + "/plugin/" + PLUGIN_NAME + "/");
+      String result = reportService.generateAssessmentReport(build.getParent().getFullDisplayName(), build.getNumber(), startedBy.orElse("Unknown Cause"), imageId, imageName, image, ruleResults, Functions.getResourcePath() + "/plugin/" + PLUGIN_NAME + "/");
       writer.write(result);
     }
 
