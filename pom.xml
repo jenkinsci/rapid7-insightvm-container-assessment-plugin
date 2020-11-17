@@ -49,7 +49,7 @@
     <commons.codec.version>1.12</commons.codec.version>
     <commons.compress.version>1.19</commons.compress.version>
     <commons.io.version>2.6</commons.io.version>
-    <docker.image.analyzer.version>0.1.12</docker.image.analyzer.version>
+    <docker.image.analyzer.version>0.2.1</docker.image.analyzer.version>
     <feign.version>10.2.3</feign.version>
     <freemarker.version>2.3.28</freemarker.version>
     <jackson.version>2.9.10</jackson.version>
