@@ -54,6 +54,7 @@
     <docker.image.analyzer.version>0.2.1</docker.image.analyzer.version>
     <feign.version>10.2.3</feign.version>
     <freemarker.version>2.3.28</freemarker.version>
+    <guava.version>28.2-jre</guava.version>
     <jackson.version>2.9.10</jackson.version>
     <jackson.databind.version>2.9.10.5</jackson.databind.version>
     <okhttp.version>3.13.1</okhttp.version>
@@ -212,6 +213,13 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
     </dependency>
 
     <dependency>
