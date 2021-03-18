@@ -9,7 +9,7 @@ import java.util.List;
 public class CustomRetryer implements Retryer {
 
   private int attempts;
-  List<Integer> statusesToRetryOn;
+  private final List<Integer> statusesToRetryOn;
 
   public CustomRetryer(Integer... retryOnStatuses) {
     this.attempts = 1;
