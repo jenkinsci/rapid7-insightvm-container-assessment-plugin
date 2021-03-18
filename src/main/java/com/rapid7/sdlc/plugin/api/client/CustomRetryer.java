@@ -2,8 +2,6 @@ package com.rapid7.sdlc.plugin.api.client;
 
 import feign.RetryableException;
 import feign.Retryer;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CustomRetryer implements Retryer {
