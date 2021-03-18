@@ -33,6 +33,11 @@ public class CustomRetryer implements Retryer {
 
   @Override
   public Retryer clone() {
+    try {
+      super.clone();
+    } catch (CloneNotSupportedException ignored) {
+      // won't compile unless this is called...
+    }
     return new CustomRetryer(statusesToRetryOn);
   }
 }
