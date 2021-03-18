@@ -2,14 +2,14 @@ package com.rapid7.sdlc.plugin.api.client;
 
 import feign.RetryableException;
 import feign.Retryer;
-import java.util.List;
+import java.util.Arrays;
 
 public class CustomRetryer implements Retryer {
 
   private int attempts;
-  private final List<Integer> statusesToRetryOn;
+  private final int[] statusesToRetryOn;
 
-  public CustomRetryer(List<Integer> retryOnStatuses) {
+  public CustomRetryer(int... retryOnStatuses) {
     this.attempts = 1;
     this.statusesToRetryOn = retryOnStatuses;
   }
@@ -19,7 +19,7 @@ public class CustomRetryer implements Retryer {
     final int maxAttempts = 3;
     final long waitIntervalInMs = 1000;
 
-    boolean retryableStatus = statusesToRetryOn.contains(e.status());
+    boolean retryableStatus = Arrays.stream(statusesToRetryOn).anyMatch(status -> status == e.status());
     if (attempts++ <= maxAttempts && retryableStatus) {
       try {
         Thread.sleep(waitIntervalInMs);
