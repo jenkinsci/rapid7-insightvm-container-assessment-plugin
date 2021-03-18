@@ -39,7 +39,7 @@ public class ApiClient {
         .encoder(new JacksonEncoder(objectMapper))
         .decoder(new JacksonDecoder(objectMapper))
         .logger(new Slf4jLogger())
-        .retryer(new CustomRetryer());
+        .retryer(new CustomRetryer(404));
   }
 
   public ApiClient(String[] authNames) {

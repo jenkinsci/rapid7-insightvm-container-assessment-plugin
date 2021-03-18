@@ -2,13 +2,18 @@ package com.rapid7.sdlc.plugin.api.client;
 
 import feign.RetryableException;
 import feign.Retryer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CustomRetryer implements Retryer {
 
   private int attempts;
+  List<Integer> statusesToRetryOn;
 
-  public CustomRetryer() {
+  public CustomRetryer(Integer... retryOnStatuses) {
     this.attempts = 1;
+    this.statusesToRetryOn = new ArrayList<>(Arrays.asList(retryOnStatuses));
   }
 
   @Override
@@ -16,8 +21,8 @@ public class CustomRetryer implements Retryer {
     final int maxAttempts = 3;
     final long waitIntervalInMs = 1000;
 
-    // Retry on 404s
-    if (attempts++ <= maxAttempts && e.status() == 404) {
+    boolean retryableStatus = statusesToRetryOn.contains(e.status());
+    if (attempts++ <= maxAttempts && retryableStatus) {
       try {
         Thread.sleep(waitIntervalInMs);
       } catch (InterruptedException ignored) {
