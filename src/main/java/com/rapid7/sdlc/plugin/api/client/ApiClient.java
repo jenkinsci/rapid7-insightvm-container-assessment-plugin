@@ -1,13 +1,12 @@
 package com.rapid7.sdlc.plugin.api.client;
 
+import com.rapid7.sdlc.plugin.api.client.auth.ApiKeyAuth;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.rapid7.sdlc.plugin.api.client.auth.ApiKeyAuth;
 import feign.Feign;
 import feign.RequestInterceptor;
-import feign.Retryer;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
@@ -31,7 +30,6 @@ public class ApiClient {
   private String basePath = "https://localhost:9999";
   private Map<String, RequestInterceptor> apiAuthorizations;
   private Feign.Builder feignBuilder;
-  protected int max404RetryAttempts = 3;
 
   public ApiClient() {
     objectMapper = createObjectMapper();
