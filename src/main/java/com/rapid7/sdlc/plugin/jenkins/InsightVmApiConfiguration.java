@@ -136,7 +136,9 @@ public class InsightVmApiConfiguration extends GlobalConfiguration {
     CA(Messages.InsightVmApiConfiguration_InsightRegionCA(), "https://ca.api.insight.rapid7.com"),
     EU(Messages.InsightVmApiConfiguration_InsightRegionEU(), "https://eu.api.insight.rapid7.com"),
     AP(Messages.InsightVmApiConfiguration_InsightRegionAP(), "https://ap.api.insight.rapid7.com"),
-    AU(Messages.InsightVmApiConfiguration_InsightRegionAU(), "https://au.api.insight.rapid7.com");
+    AU(Messages.InsightVmApiConfiguration_InsightRegionAU(), "https://au.api.insight.rapid7.com"),
+    US2(Messages.InsightVmApiConfiguration_InsightRegionUS2(), "https://us2.api.insight.rapid7.com"),
+    US3(Messages.InsightVmApiConfiguration_InsightRegionUS3(), "https://us3.api.insight.rapid7.com");
 
     private String label;
     private String endpoint;
