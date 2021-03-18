@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sun.tools.javac.util.List;
 import feign.Feign;
 import feign.RequestInterceptor;
 import feign.jackson.JacksonDecoder;
@@ -39,7 +40,7 @@ public class ApiClient {
         .encoder(new JacksonEncoder(objectMapper))
         .decoder(new JacksonDecoder(objectMapper))
         .logger(new Slf4jLogger())
-        .retryer(new CustomRetryer(404));
+        .retryer(new CustomRetryer(List.of(404)));
   }
 
   public ApiClient(String[] authNames) {

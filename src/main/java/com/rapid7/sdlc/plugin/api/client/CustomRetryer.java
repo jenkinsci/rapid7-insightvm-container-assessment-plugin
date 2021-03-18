@@ -11,9 +11,9 @@ public class CustomRetryer implements Retryer {
   private int attempts;
   private final List<Integer> statusesToRetryOn;
 
-  public CustomRetryer(Integer... retryOnStatuses) {
+  public CustomRetryer(List<Integer> retryOnStatuses) {
     this.attempts = 1;
-    this.statusesToRetryOn = new ArrayList<>(Arrays.asList(retryOnStatuses));
+    this.statusesToRetryOn = retryOnStatuses;
   }
 
   @Override
@@ -35,6 +35,6 @@ public class CustomRetryer implements Retryer {
 
   @Override
   public Retryer clone() {
-    return new CustomRetryer();
+    return new CustomRetryer(statusesToRetryOn);
   }
 }
