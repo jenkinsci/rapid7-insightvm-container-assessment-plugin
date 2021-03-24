@@ -1,10 +1,10 @@
 package com.rapid7.sdlc.plugin.api.client;
 
+import com.rapid7.sdlc.plugin.api.client.auth.ApiKeyAuth;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.rapid7.sdlc.plugin.api.client.auth.ApiKeyAuth;
 import feign.Feign;
 import feign.RequestInterceptor;
 import feign.jackson.JacksonDecoder;
@@ -38,7 +38,8 @@ public class ApiClient {
         .client(new OkHttpClient())
         .encoder(new JacksonEncoder(objectMapper))
         .decoder(new JacksonDecoder(objectMapper))
-        .logger(new Slf4jLogger());
+        .logger(new Slf4jLogger())
+        .retryer(new CustomRetryer(404));
   }
 
   public ApiClient(String[] authNames) {
