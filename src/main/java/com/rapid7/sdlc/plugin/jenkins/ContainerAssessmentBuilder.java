@@ -262,7 +262,11 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
       Image image = null;
       if (imageJson.exists()) {
         ObjectMapper mapper = new ImageModelObjectMapper();
-        image = mapper.readValue(imageJson.readToString(), Image.class);
+        try {
+          image = mapper.readValue(imageJson.readToString(), Image.class);
+        } catch (Exception exception) {
+          throw new AbortException("Image analysis failed: image.json is not valid.");
+        }
       }
       else {
         throw new AbortException("Image analysis failed: image.json not found in workspace.");
