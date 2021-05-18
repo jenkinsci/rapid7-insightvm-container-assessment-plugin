@@ -57,6 +57,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -262,7 +263,15 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
       Image image = null;
       if (imageJson.exists()) {
         ObjectMapper mapper = new ImageModelObjectMapper();
-        image = mapper.readValue(imageJson.readToString(), Image.class);
+        try {
+          image = mapper.readValue(imageJson.readToString(), Image.class);
+        } catch (Exception exception) {
+          StringBuilder message = new StringBuilder(exception.toString());
+          message.append("\n");
+          Arrays.stream(exception.getStackTrace()).forEach(line -> message.append('\t').append(line.toString()).append('\n'));
+          logger.println(message.toString());
+          throw new AbortException("Image analysis failed: image.json is not valid.");
+        }
       }
       else {
         throw new AbortException("Image analysis failed: image.json not found in workspace.");
