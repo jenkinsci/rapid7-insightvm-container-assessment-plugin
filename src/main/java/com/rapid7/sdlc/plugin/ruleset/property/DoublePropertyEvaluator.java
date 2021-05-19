@@ -29,7 +29,7 @@ public abstract class DoublePropertyEvaluator implements PropertyEvaluator {
 
   @Override
   public boolean isValid() {
-    return threshold > 0.0;
+    return threshold >= 0.0;
   }
 
   @Override
