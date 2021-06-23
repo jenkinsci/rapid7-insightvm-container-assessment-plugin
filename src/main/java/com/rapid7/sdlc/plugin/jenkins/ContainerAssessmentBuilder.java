@@ -46,6 +46,20 @@ import hudson.tasks.Builder;
 import hudson.util.ArgumentListBuilder;
 import hudson.util.FormValidation;
 import hudson.util.Secret;
+import jenkins.model.Jenkins;
+import jenkins.security.MasterToSlaveCallable;
+import jenkins.tasks.SimpleBuildStep;
+import net.sf.json.JSONObject;
+import org.jenkinsci.Symbol;
+import org.jenkinsci.plugins.docker.commons.tools.DockerTool;
+import org.jenkinsci.plugins.plaincredentials.StringCredentials;
+import org.kohsuke.stapler.AncestorInPath;
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
+
+import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -66,19 +80,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Nonnull;
-import jenkins.model.Jenkins;
-import jenkins.security.MasterToSlaveCallable;
-import jenkins.tasks.SimpleBuildStep;
-import net.sf.json.JSONObject;
-import org.jenkinsci.Symbol;
-import org.jenkinsci.plugins.docker.commons.tools.DockerTool;
-import org.jenkinsci.plugins.plaincredentials.StringCredentials;
-import org.kohsuke.stapler.AncestorInPath;
-import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
+
 import static com.cloudbees.plugins.credentials.CredentialsMatchers.withId;
 import static hudson.Util.fixNull;
 import static java.util.Collections.emptyMap;
@@ -102,6 +104,8 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
   private String imageId;
   private String workspaceDir;
   private ApiClient apiClient;
+  private boolean writeReportToWorkspace;
+  private String workspaceFilename;
 
   @DataBoundConstructor
   public ContainerAssessmentBuilder() {
@@ -163,6 +167,24 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
   public void setNameRules(List<NameRuleDescribable> rules) {
     this.nameRules = rules;
     rules.forEach(ruleDescriptor -> rawRules.add(new Rule(ruleDescriptor.getActionObject(), ruleDescriptor.getPropertyEvaluator())));
+  }
+
+  public boolean getWriteReportToWorkspace() {
+    return writeReportToWorkspace;
+  }
+
+  @DataBoundSetter
+  public void setWriteReportToWorkspace(final boolean writeReportToWorkspace) {
+    this.writeReportToWorkspace = writeReportToWorkspace;
+  }
+
+  public String getWorkspaceFilename() {
+    return workspaceFilename;
+  }
+
+  @DataBoundSetter
+  public void setWorkspaceFilename(final String workspaceFilename) {
+    this.workspaceFilename = workspaceFilename;
   }
 
   @SuppressFBWarnings("REC_CATCH_EXCEPTION")
