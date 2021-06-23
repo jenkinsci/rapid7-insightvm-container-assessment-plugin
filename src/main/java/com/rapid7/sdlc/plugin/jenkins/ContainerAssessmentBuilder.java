@@ -8,6 +8,8 @@ import com.rapid7.container.analyzer.docker.model.image.ImageId;
 import com.rapid7.container.analyzer.docker.model.image.json.ImageModelObjectMapper;
 import com.rapid7.container.analyzer.docker.service.DockerImageAnalyzerService;
 import com.rapid7.sdlc.plugin.AssessmentService;
+import com.rapid7.sdlc.plugin.HtmlReportService;
+import com.rapid7.sdlc.plugin.JsonReportService;
 import com.rapid7.sdlc.plugin.ReportService;
 import com.rapid7.sdlc.plugin.Status;
 import com.rapid7.sdlc.plugin.api.BuildApi;
@@ -25,7 +27,6 @@ import com.rapid7.sdlc.plugin.ruleset.Rule;
 import com.rapid7.sdlc.plugin.ruleset.RuleResult;
 import com.rapid7.sdlc.plugin.ruleset.action.FailAction;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import freemarker.template.TemplateException;
 import hudson.AbortException;
 import hudson.EnvVars;
 import hudson.Extension;
@@ -65,7 +66,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -152,12 +153,12 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
     return thresholdRules;
   }
 
-  @DataBoundSetter
-  public void setThresholdRules(List<ThresholdRuleDescribable> rules) {
-    this.thresholdRules = rules;
-    rules.forEach(r -> uniqueThresholdRules.putIfAbsent(r.getClass().getName(), r));
-    uniqueThresholdRules.values().forEach(ruleDescriptor -> rawRules.add(new Rule(ruleDescriptor.getActionObject(), ruleDescriptor.getPropertyEvaluator())));
-  }
+    @DataBoundSetter
+    public void setThresholdRules(List<ThresholdRuleDescribable> rules) {
+        this.thresholdRules = rules;
+        rules.forEach(r -> uniqueThresholdRules.putIfAbsent(r.getClass().getName(), r));
+        uniqueThresholdRules.values().forEach(ruleDescriptor -> rawRules.add(new Rule(ruleDescriptor.getActionObject(), ruleDescriptor.getPropertyEvaluator())));
+    }
 
   public List<NameRuleDescribable> getNameRules() {
     return nameRules;
@@ -320,7 +321,7 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
       Map<Rule, RuleResult> ruleResults = evaluateRules(assessedImage, logger);
 
       logger.println("Generating report...");
-      generateReport(build, image.getId(), expandedImageId, assessedImage, ruleResults);
+      generateReport(build, image.getId(), expandedImageId, assessedImage, ruleResults, workspace);
 
       logger.println("Executing rule actions...");
       Status buildStatus = takeRuleActions(build, listener, ruleResults);
@@ -444,32 +445,61 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
    * @param ruleResults A list of rule-boolean pairs where each boolean indicates whether the
    *        corresponding rule was triggered.
    * @throws IOException If the report template cannot be read.
-   * @throws TemplateException If the report template fails to process.
+   * @throws ReportCreationException If the report template fails to process.
    */
-  private void generateReport(Run<?, ?> build, ImageId imageId, String imageName, com.rapid7.sdlc.plugin.api.model.Image image, Map<Rule, RuleResult> ruleResults) throws IOException, TemplateException {
+  private void generateReport(Run<?, ?> build, ImageId imageId, String imageName, com.rapid7.sdlc.plugin.api.model.Image image, Map<Rule, RuleResult> ruleResults, FilePath workspace) throws IOException, ReportCreationException, InterruptedException {
     // TODO: utilize a reporting plugin abstract away all of this?
     File reportDir = new File(build.getRootDir(), AssessmentReportBaseAction.BASE_DIR);
     if (!reportDir.exists() && !reportDir.mkdir()) {
       throw new IOException("Report directory does not exist, and could not be created.");
     }
 
-    File reportFile = new File(reportDir, AssessmentReportBaseAction.REPORT_PAGE);
-    ReportService reportService = new ReportService(reportDir);
     Optional<String> startedBy = build.getCauses().stream().map(Cause::getShortDescription).findFirst();
 
-    try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(reportFile), StandardCharsets.UTF_8)) {
-      String result = reportService.generateAssessmentReport(build.getParent().getFullDisplayName(), build.getNumber(), startedBy.orElse("Unknown Cause"), imageId, imageName, image, ruleResults, Functions.getResourcePath() + "/plugin/" + PLUGIN_NAME + "/");
-      writer.write(result);
+    final File htmlReport = new File(reportDir, AssessmentReportBaseAction.REPORT_PAGE);
+    try (final OutputStream outputStream = new FileOutputStream(htmlReport)) {
+      final ReportService service = new HtmlReportService(reportDir);
+      writeReport(build, imageId, imageName, image, ruleResults, startedBy, outputStream, service);
     }
 
-    AssessmentReportRunAction action = new AssessmentReportRunAction(reportDir);
-    build.replaceAction(action);
-  }
+    final File jsonReport = new File(reportDir, AssessmentReportBaseAction.REPORT_JSON);
+    final ReportService service = new JsonReportService();
+    try (final OutputStream outputStream = new FileOutputStream(jsonReport)) {
+      writeReport(build, imageId, imageName, image, ruleResults, startedBy, outputStream, service);
+    }
 
-  @Override
-  public hudson.model.Action getProjectAction(AbstractProject<?, ?> project) {
-    return new AssessmentReportProjectAction(project);
-  }
+    if (writeReportToWorkspace) {
+      final String reportfileName;
+      if (!workspaceFilename.trim().isEmpty()) {
+        reportfileName = workspaceFilename.trim();
+      } else {
+        reportfileName = "rapid7-report.json";
+      }
+      try (final OutputStream outputStream = new FilePath(workspace, reportfileName).write()) {
+        writeReport(build, imageId, imageName, image, ruleResults, startedBy, outputStream, service);
+      }
+    }
+
+      final AssessmentReportRunAction action = new AssessmentReportRunAction(reportDir);
+      build.replaceAction(action);
+    }
+
+    private static void writeReport(final Run<?, ?> build, final ImageId imageId, final String imageName,
+                                    final com.rapid7.sdlc.plugin.api.model.Image image, final Map<Rule, RuleResult> ruleResults,
+                                    final Optional<String> startedBy, final OutputStream writer,
+                                    final ReportService reportService) throws IOException, ReportCreationException {
+        final String staticContentDir = Functions.getResourcePath() + "/plugin/" + PLUGIN_NAME + "/";
+        final String result = reportService.generateAssessmentReport(build.getParent()
+                        .getFullDisplayName(), build.getNumber(),
+                startedBy.orElse("Unknown Cause"), imageId, imageName,
+                image, ruleResults, staticContentDir);
+        writer.write(result.getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public hudson.model.Action getProjectAction(AbstractProject<?, ?> project) {
+        return new AssessmentReportProjectAction(project);
+    }
 
   @Override
   public DescriptorImpl getDescriptor() {
