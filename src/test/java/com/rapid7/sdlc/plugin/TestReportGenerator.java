@@ -1,12 +1,13 @@
 package com.rapid7.sdlc.plugin;
 
-import com.rapid7.container.analyzer.docker.model.image.ImageId;
-import com.rapid7.sdlc.plugin.ruleset.Rule;
-import com.rapid7.sdlc.plugin.ruleset.RuleResult;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Files;
-import freemarker.template.TemplateException;
+import com.rapid7.container.analyzer.docker.model.image.ImageId;
+import com.rapid7.sdlc.plugin.jenkins.ReportCreationException;
+import com.rapid7.sdlc.plugin.ruleset.Rule;
+import com.rapid7.sdlc.plugin.ruleset.RuleResult;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class TestReportGenerator {
   private static final String STATIC_DIR = "/";
 
 
-  public static void main(String[] args) throws IOException, TemplateException {
+  public static void main(String[] args) throws IOException, ReportCreationException {
     File workspace;
     if (args.length > 0)
       workspace = new File(args[0]);
@@ -35,10 +36,10 @@ public class TestReportGenerator {
     generateReport(workspace);
   }
 
-  public static void generateReport(File workspace) throws IOException, TemplateException {
+  public static void generateReport(File workspace) throws IOException, ReportCreationException {
     File reportFile = new File(workspace, "report.html");
     System.out.println("Report: " + reportFile.getAbsolutePath());
-    ReportService reportService = new ReportService(workspace);
+    ReportService reportService = new HtmlReportService(workspace);
     ObjectMapper mapper = new ObjectMapper();
     mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     com.rapid7.sdlc.plugin.api.model.Image assessedImage;
