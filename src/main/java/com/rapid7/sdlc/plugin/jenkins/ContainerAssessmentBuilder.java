@@ -470,7 +470,7 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
 
     if (writeReportToWorkspace) {
       final String reportfileName;
-      if (!workspaceFilename.trim().isEmpty()) {
+      if (null != workspaceFilename && !workspaceFilename.trim().isEmpty()) {
         reportfileName = workspaceFilename.trim();
       } else {
         reportfileName = "rapid7-report.json";
