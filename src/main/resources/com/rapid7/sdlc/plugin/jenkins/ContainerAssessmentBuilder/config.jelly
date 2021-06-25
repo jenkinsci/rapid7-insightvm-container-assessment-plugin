@@ -10,6 +10,16 @@
     <f:entry title="${%options.imageId}" field="imageId">
       <f:textbox checkMethod="post"/>
     </f:entry>
+    <f:optionalBlock name="writeReportToWorkspace"
+                     title="${%Write report to workspace}"
+                     inline="true"
+                     checked="${writeReportToWorkspace}"
+                     field="writeReportToWorkspace">
+      <f:entry title="${%custom filename for report}"
+               field="workspaceFilename">
+        <f:textbox/>
+      </f:entry>
+    </f:optionalBlock>
   </f:section>
   <f:section title="${%ThresholdRules}">
     <f:block>
