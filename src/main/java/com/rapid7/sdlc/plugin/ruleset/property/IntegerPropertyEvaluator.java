@@ -28,7 +28,7 @@ public abstract class IntegerPropertyEvaluator implements PropertyEvaluator {
 
   @Override
   public boolean isValid() {
-    return threshold > 0;
+    return threshold >= 0;
   }
 
   @Override
