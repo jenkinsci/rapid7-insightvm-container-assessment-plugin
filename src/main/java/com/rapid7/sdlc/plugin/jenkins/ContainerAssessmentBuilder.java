@@ -63,6 +63,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
@@ -167,7 +168,7 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
 
   @SuppressFBWarnings("REC_CATCH_EXCEPTION")
   @Override
-  public void perform(@Nonnull Run<?, ?> build, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener listener) {
+  public void perform(@Nonnull Run<?, ?> build, @Nonnull FilePath workspace, @Nonnull Launcher launcher, @Nonnull TaskListener listener) throws AbortException {
     final PrintStream logger = listener.getLogger();
     logger.println("Starting Rapid7 InsightVM Container Assessment");
     FilePath sdlcTemp = null;
@@ -323,6 +324,9 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
       }
     }
     logger.println("Image assessment completed.");
+    if(Objects.equals(build.getResult(), Result.FAILURE)) {
+      throw new AbortException("Plugin ran successfully. Throwing error because build was marked as failure.");
+    }
   }
 
   @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
