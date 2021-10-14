@@ -50,7 +50,7 @@
     <commons.codec.version>1.12</commons.codec.version>
     <commons.compress.version>1.21</commons.compress.version>
     <commons.collections.version>3.2.2</commons.collections.version>
-    <commons.io.version>2.6</commons.io.version>
+    <commons.io.version>2.7</commons.io.version>
     <docker.image.analyzer.version>0.2.1</docker.image.analyzer.version>
     <feign.version>10.2.3</feign.version>
     <freemarker.version>2.3.28</freemarker.version>
