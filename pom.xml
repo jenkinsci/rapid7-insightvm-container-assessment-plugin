@@ -56,7 +56,7 @@
     <freemarker.version>2.3.28</freemarker.version>
     <guava.version>29.0-jre</guava.version>
     <jackson.version>2.9.10</jackson.version>
-    <jackson.databind.version>2.9.10.7</jackson.databind.version>
+    <jackson.databind.version>2.9.10.8</jackson.databind.version>
     <okhttp.version>3.13.1</okhttp.version>
     <slf4j.api.version>1.7.30</slf4j.api.version>
     <!-- jenkins plugin dependencies -->
