@@ -255,6 +255,63 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
       if (status != 0)
         throw new AbortException("Docker command exited with status " + status + ": " + err.toString(StandardCharsets.UTF_8.name()));
 
+      args.clear();
+      out.reset();
+      err.reset();
+
+      args.add(new String[] {"ls", "-l", "image.tar"});
+      status = procStarter.cmds(args).envs(environment).stdout(out).start().join();
+      logger.println("The file ownership of image.tar: " + out);
+
+      args.clear();
+      out.reset();
+      err.reset();
+
+      logger.println("Changing image file ownership.");
+      args.add(new String[] {"chown", "1000:1000", "image.tar"});
+      if (useSudo) {
+        args.prepend(new String[] {"sudo"});
+      }
+
+      args.clear();
+      out.reset();
+      err.reset();
+
+      logger.println("Changing image file permissions");
+      args.add(new String[] {"chmod", "755", "image.tar"});
+      if (useSudo) {
+        args.prepend(new String[] {"sudo"});
+      }
+      status = procStarter.cmds(args).envs(environment).stdout(out).stderr(err).start().join();
+      if (status != 0) {
+        logger.println("This was the error output: " + err);
+        throw new AbortException("Error changing permissions of image.tar");
+      }
+
+      logger.println("Temp directory permissions bit mask: " + sdlcTemp.mode());
+
+      args.clear();
+      out.reset();
+      err.reset();
+
+      args.add(new String[] {"whoami"});
+      status = procStarter.cmds(args).envs(environment).stdout(out).stderr(err).start().join();
+      logger.println("Who am I? : " + out);
+
+      args.clear();
+      out.reset();
+      err.reset();
+
+      args.add(new String[] {"ls", "-l", "image.tar"});
+      status = procStarter.cmds(args).envs(environment).stdout(out).start().join();
+      logger.println("The file ownership of image.tar: " + out);
+
+      status = procStarter.cmds(args).envs(environment).stdout(out).stderr(err).start().join();
+      if (status != 0) {
+        logger.println("This was the error output: " + err);
+        throw new AbortException("Error transferring ownership of image.tar");
+      }
+
       // Execute image analyzer on remote agent where docker image was built
       AnalyzeCallable analyzer = new AnalyzeCallable(sdlcTemp, InsightVmApiConfiguration.get().getRpmDockerImage(), launcher.getListener());
       logger.println("Analyzing image " + expandedImageId + "...");
