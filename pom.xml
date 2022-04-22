@@ -60,7 +60,7 @@
     <okhttp.version>3.13.1</okhttp.version>
     <slf4j.api.version>1.7.30</slf4j.api.version>
     <!-- jenkins plugin dependencies -->
-    <credentials.version>2.3.19</credentials.version>
+    <credentials.version>2.6.1.1</credentials.version>
     <docker-commons.version>1.13</docker-commons.version>
     <plain-credentials.version>1.4</plain-credentials.version>
     <scm-api.version>1.3</scm-api.version>
