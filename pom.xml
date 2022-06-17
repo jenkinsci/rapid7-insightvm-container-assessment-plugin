@@ -1,50 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>3.46</version>
+    <version>4.0</version>
     <relativePath />
   </parent>
-
   <artifactId>rapid7-insightvm-container-assessment</artifactId>
   <version>1.0.22-SNAPSHOT</version>
   <packaging>hpi</packaging>
-
   <name>InsightVM Container Image Scanner</name>
   <description>Scan your Docker images using Rapid7 InsightVM</description>
   <url>https://wiki.jenkins.io/display/JENKINS/Rapid7+InsightVM+Container+Assessment+Plugin</url>
-
   <developers>
     <developer>
       <id>rapid7</id>
       <name>Rapid7</name>
     </developer>
   </developers>
-
   <licenses>
     <license>
       <name>MIT License</name>
       <url>http://opensource.org/licenses/MIT</url>
     </license>
   </licenses>
-
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin.git</connection>
     <developerConnection>scm:git:git@github.com:jenkinsci/rapid7-insightvm-container-assessment-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/rapid7-insightvm-container-assessment-plugin</url>
     <tag>HEAD</tag>
   </scm>
-
   <properties>
     <java.level>8</java.level>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <spotbugs.failOnError>false</spotbugs.failOnError>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
-    <jenkins.version>2.303.1</jenkins.version>
+    <jenkins.version>2.332.3</jenkins.version>
     <!-- regular dependencies -->
     <commons.beanutils.version>1.9.4</commons.beanutils.version>
     <commons.codec.version>1.15</commons.codec.version>
@@ -56,6 +49,7 @@
     <freemarker.version>2.3.28</freemarker.version>
     <guava.version>29.0-jre</guava.version>
     <jackson.version>2.9.10</jackson.version>
+    <jaxb.version>2.3.6-1</jaxb.version>
     <jackson.databind.version>2.14</jackson.databind.version>
     <okhttp.version>3.13.1</okhttp.version>
     <slf4j.api.version>1.7.30</slf4j.api.version>
@@ -69,27 +63,34 @@
     <log4j.over.slf4j.version>1.7.36</log4j.over.slf4j.version>
     <slf4j.jdk14.version>1.7.36</slf4j.jdk14.version>
     <annotation.indexer.version>1.16</annotation.indexer.version>
-    <access.modifier.annotation.version>1.27</access.modifier.annotation.version>
+    <access.modifier.annotation.version>1.27</access.modifier.annotation.version> 
     <spotbugs.annotations.version>4.5.3</spotbugs.annotations.version>
     <symbol.annotation.version>1.23</symbol.annotation.version>
+    <javax.activation.api.version>1.2.0-3</javax.activation.api.version>
+    <json.version>20190722</json.version>
   </properties>
-
   <repositories>
     <repository>
       <id>repo.jenkins-ci.org</id>
       <url>https://repo.jenkins-ci.org/public/</url>
     </repository>
   </repositories>
-
   <pluginRepositories>
     <pluginRepository>
       <id>repo.jenkins-ci.org</id>
       <url>https://repo.jenkins-ci.org/public/</url>
     </pluginRepository>
   </pluginRepositories>
-
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.jenkins-ci.tools</groupId>
         <artifactId>maven-hpi-plugin</artifactId>
@@ -100,7 +101,6 @@
       </plugin>
     </plugins>
   </build>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -108,25 +108,21 @@
         <artifactId>commons-compress</artifactId>
         <version>${commons.compress.version}</version>
       </dependency>
-
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
         <version>${commons.codec.version}</version>
       </dependency>
-
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons.io.version}</version>
       </dependency>
-
       <dependency>
         <groupId>org.jenkins-ci</groupId>
         <artifactId>symbol-annotation</artifactId>
         <version>${symbol.annotation.version}</version>
       </dependency>
-
       <dependency>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>scm-api</artifactId>
@@ -134,7 +130,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <!-- JSON processing: jackson -->
     <dependency>
@@ -142,141 +137,133 @@
       <artifactId>jackson-annotations</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.databind.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jdk8</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>${jackson.version}</version>
     </dependency>
-
     <!-- HTTP client: Netflix Feign -->
     <dependency>
       <groupId>io.github.openfeign</groupId>
       <artifactId>feign-core</artifactId>
       <version>${feign.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.github.openfeign</groupId>
       <artifactId>feign-jackson</artifactId>
       <version>${feign.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.github.openfeign</groupId>
       <artifactId>feign-okhttp</artifactId>
       <version>${feign.version}</version>
     </dependency>
-
     <dependency>
       <groupId>io.github.openfeign</groupId>
       <artifactId>feign-slf4j</artifactId>
       <version>${feign.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>credentials</artifactId>
       <version>${credentials.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>docker-commons</artifactId>
       <version>${docker-commons.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>plain-credentials</artifactId>
       <version>${plain-credentials.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>${freemarker.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.rapid7.docker</groupId>
       <artifactId>docker-image-analyzer</artifactId>
       <version>${docker.image.analyzer.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.api.version}</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
     </dependency>
-
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
       <version>${commons.beanutils.version}</version>
     </dependency>
-
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>${commons.collections.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>jaxb</artifactId>
+      <version>${jaxb.version}</version>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${jcl.over.slf4j.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.jenkins-ci</groupId>
       <artifactId>annotation-indexer</artifactId>
       <version>${annotation.indexer.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.kohsuke</groupId>
       <artifactId>access-modifier-annotation</artifactId>
       <version>${access.modifier.annotation.version}</version>
     </dependency>
-
-    <dependency>
+    <dependency> 
       <groupId>org.slf4j</groupId>
       <artifactId>log4j-over-slf4j</artifactId>
       <version>${log4j.over.slf4j.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
       <version>${slf4j.jdk14.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
       <version>${spotbugs.annotations.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>javax-activation-api</artifactId>
+      <version>${javax.activation.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${json.version}</version>
+    </dependency>
     <!-- For pipeline unit tests -->
     <!--<dependency>-->
     <!--<groupId>org.jenkins-ci.plugins.workflow</groupId>-->
