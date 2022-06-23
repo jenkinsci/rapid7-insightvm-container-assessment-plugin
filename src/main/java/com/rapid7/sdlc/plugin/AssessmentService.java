@@ -9,6 +9,8 @@ import com.rapid7.sdlc.plugin.api.model.ImageOperatingSystem;
 import com.rapid7.sdlc.plugin.api.model.LayerEdit;
 import com.rapid7.sdlc.plugin.api.model.PackageEdit;
 import com.rapid7.sdlc.plugin.api.model.RepositoryDigest;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.BasicConfigurator;
 import static java.util.stream.Collectors.toList;
 
@@ -39,9 +41,13 @@ public class AssessmentService {
   }
 
   private ImageEdit convert(Image image) {
+    List<RepositoryDigest> digests = new ArrayList<>();
+    if(image != null && image.getDigest() != null) {
+      digests.add(new RepositoryDigest().digest(image.getDigest().getString()));
+    }
     return new ImageEdit()
         .created(image.getCreated().toString())
-        .digests(image.getDigests().stream().map(d -> new RepositoryDigest().digest(d.getString())).collect(toList()))
+        .digests(digests)
         .id(image.getId().getString())
         .layers(image.getLayers().stream().map(this::convert).collect(toList()))
         .size(image.getSize())
