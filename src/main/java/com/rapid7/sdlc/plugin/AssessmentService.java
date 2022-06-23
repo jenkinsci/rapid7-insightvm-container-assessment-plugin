@@ -41,17 +41,42 @@ public class AssessmentService {
   }
 
   private ImageEdit convert(Image image) {
+    if (image == null) {
+      return new ImageEdit();
+    }
+
+    String created = null;
+    if (image.getCreated() != null) {
+      created = image.getCreated().toString();
+    }
+
     List<RepositoryDigest> digests = new ArrayList<>();
-    if(image != null && image.getDigest() != null) {
+    if(image.getDigest() != null) {
       digests.add(new RepositoryDigest().digest(image.getDigest().getString()));
     }
+
+    String id = null;
+    if (image.getId() != null) {
+      id = image.getId().getString();
+    }
+
+    List<LayerEdit> layerEdits = new ArrayList<>();
+    if (image.getLayers() != null) {
+      layerEdits = image.getLayers().stream().map(this::convert).collect(toList());
+    }
+
+    String type = null;
+    if (image.getType() != null) {
+      type = image.getType().name();
+    }
+
     return new ImageEdit()
-        .created(image.getCreated().toString())
+        .created(created)
         .digests(digests)
-        .id(image.getId().getString())
-        .layers(image.getLayers().stream().map(this::convert).collect(toList()))
+        .id(id)
+        .layers(layerEdits)
         .size(image.getSize())
-        .type(image.getType().name());
+        .type(type);
   }
 
   private LayerEdit convert(com.rapid7.container.analyzer.docker.model.image.Layer layer) {
