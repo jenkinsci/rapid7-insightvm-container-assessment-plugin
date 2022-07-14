@@ -44,7 +44,7 @@
     <freemarker.version>2.3.28</freemarker.version>
     <json.version>20190722</json.version>
     <!-- jenkins plugin dependencies -->
-    <docker-commons.version>1.13</docker-commons.version>
+    <docker-commons.version>1.18</docker-commons.version>
   </properties>
   <repositories>
     <repository>
