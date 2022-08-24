@@ -78,6 +78,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
@@ -281,7 +282,11 @@ public class ContainerAssessmentBuilder extends Builder implements SimpleBuildSt
       // Execute image analyzer on remote agent where docker image was built
       AnalyzeCallable analyzer = new AnalyzeCallable(sdlcTemp, InsightVmApiConfiguration.get().getRpmDockerImage(), launcher.getListener());
       logger.println("Analyzing image " + expandedImageId + "...");
-      launcher.getChannel().call(analyzer);
+      try {
+        Objects.requireNonNull(launcher.getChannel()).call(analyzer);
+      } catch (NullPointerException nullPointerException) {
+        logger.println("No channel found for launch. Unable to call analyzer.");
+      }
       FilePath imageJson = sdlcTemp.child("image.json");
       Image image = null;
       if (imageJson.exists()) {

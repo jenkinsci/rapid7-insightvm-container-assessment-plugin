@@ -6,12 +6,10 @@ import java.util.Arrays;
 
 public class CustomRetryer implements Retryer {
 
-  private int attempts;
-  private final int[] statusesToRetryOn;
+  private long attempts;
 
-  public CustomRetryer(int... retryOnStatuses) {
-    this.attempts = 1;
-    this.statusesToRetryOn = retryOnStatuses;
+  public CustomRetryer() {
+    this.attempts = 1L;
   }
 
   @Override
@@ -19,10 +17,10 @@ public class CustomRetryer implements Retryer {
     final int maxAttempts = 3;
     final long waitIntervalInMs = 1000;
 
-    boolean retryableStatus = Arrays.stream(statusesToRetryOn).anyMatch(status -> status == e.status());
+    boolean retryableStatus = 400 <= e.status() && e.status() < 500;
     if (attempts++ <= maxAttempts && retryableStatus) {
       try {
-        Thread.sleep(waitIntervalInMs);
+        Thread.sleep(waitIntervalInMs * (this.attempts * 5L));
       } catch (InterruptedException ignored) {
         Thread.currentThread().interrupt();
       }
@@ -38,6 +36,6 @@ public class CustomRetryer implements Retryer {
     } catch (CloneNotSupportedException ignored) {
       // won't compile unless this is called...
     }
-    return new CustomRetryer(statusesToRetryOn);
+    return new CustomRetryer();
   }
 }
