@@ -9,6 +9,8 @@ import com.rapid7.sdlc.plugin.api.model.ImageOperatingSystem;
 import com.rapid7.sdlc.plugin.api.model.LayerEdit;
 import com.rapid7.sdlc.plugin.api.model.PackageEdit;
 import com.rapid7.sdlc.plugin.api.model.RepositoryDigest;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.BasicConfigurator;
 import static java.util.stream.Collectors.toList;
 
@@ -39,13 +41,42 @@ public class AssessmentService {
   }
 
   private ImageEdit convert(Image image) {
+    if (image == null) {
+      return new ImageEdit();
+    }
+
+    String created = null;
+    if (image.getCreated() != null) {
+      created = image.getCreated().toString();
+    }
+
+    List<RepositoryDigest> digests = new ArrayList<>();
+    if(image.getDigest() != null) {
+      digests.add(new RepositoryDigest().digest(image.getDigest().getString()));
+    }
+
+    String id = null;
+    if (image.getId() != null) {
+      id = image.getId().getString();
+    }
+
+    List<LayerEdit> layerEdits = new ArrayList<>();
+    if (image.getLayers() != null) {
+      layerEdits = image.getLayers().stream().map(this::convert).collect(toList());
+    }
+
+    String type = null;
+    if (image.getType() != null) {
+      type = image.getType().name();
+    }
+
     return new ImageEdit()
-        .created(image.getCreated().toString())
-        .digests(image.getDigests().stream().map(d -> new RepositoryDigest().digest(d.getString())).collect(toList()))
-        .id(image.getId().getString())
-        .layers(image.getLayers().stream().map(this::convert).collect(toList()))
+        .created(created)
+        .digests(digests)
+        .id(id)
+        .layers(layerEdits)
         .size(image.getSize())
-        .type(image.getType().name());
+        .type(type);
   }
 
   private LayerEdit convert(com.rapid7.container.analyzer.docker.model.image.Layer layer) {
