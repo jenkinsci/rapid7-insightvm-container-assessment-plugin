@@ -42,7 +42,7 @@
     <docker.image.analyzer.version>0.2.21</docker.image.analyzer.version>
     <feign.version>10.2.3</feign.version>
     <freemarker.version>2.3.28</freemarker.version>
-    <json.version>20190722</json.version>
+    <json.version>20230227</json.version>
     <!-- jenkins plugin dependencies -->
     <docker-commons.version>1.18</docker-commons.version>
   </properties>
