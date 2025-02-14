@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.40</version>
+    <version>4.51</version>
     <relativePath />
   </parent>
   <artifactId>rapid7-insightvm-container-assessment</artifactId>
@@ -13,12 +13,6 @@
   <name>InsightVM Container Image Scanner</name>
   <description>Scan your Docker images using Rapid7 InsightVM</description>
   <url>https://wiki.jenkins.io/display/JENKINS/Rapid7+InsightVM+Container+Assessment+Plugin</url>
-  <developers>
-    <developer>
-      <id>rapid7</id>
-      <name>Rapid7</name>
-    </developer>
-  </developers>
   <licenses>
     <license>
       <name>MIT License</name>
@@ -35,8 +29,10 @@
     <revision>1.0.22</revision>
     <changelist>-SNAPSHOT</changelist>
     <spotbugs.failOnError>false</spotbugs.failOnError>
+    <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
+    <jenkins.baseline>2.346</jenkins.baseline>
     <!-- Baseline Jenkins version you use to build the plugin. Users must have this version or newer to run. -->
-    <jenkins.version>2.332.3</jenkins.version>
+    <jenkins.version>${jenkins.baseline}.3</jenkins.version>
     <gitHubRepo>jenkinsci/${project.artifactId}-plugin</gitHubRepo>
     <!-- regular dependencies -->
     <docker.image.analyzer.version>0.2.21</docker.image.analyzer.version>
@@ -73,8 +69,8 @@
     <dependencies>
       <dependency>
         <groupId>io.jenkins.tools.bom</groupId>
-        <artifactId>bom-2.332.x</artifactId>
-        <version>1409.v7659b_c072f18</version>
+        <artifactId>bom-${jenkins.baseline}.x</artifactId>
+        <version>1763.v092b_8980a_f5e</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

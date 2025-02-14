@@ -4,8 +4,6 @@ import com.rapid7.sdlc.plugin.api.model.Image;
 import com.rapid7.sdlc.plugin.api.model.Package;
 import com.rapid7.sdlc.plugin.api.model.Vulnerability.SeverityEnum;
 import com.rapid7.sdlc.plugin.ruleset.CriterionName;
-import com.google.common.collect.Collections2;
-import java.util.HashSet;
 import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 
