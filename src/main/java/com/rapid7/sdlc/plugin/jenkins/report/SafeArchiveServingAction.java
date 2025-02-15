@@ -19,10 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 import org.kohsuke.stapler.HttpResponse;
-import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.StaplerRequest2;
+import org.kohsuke.stapler.StaplerResponse2;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableSet;
@@ -147,7 +147,7 @@ public class SafeArchiveServingAction extends AssessmentReportBaseAction {
     return rootDir;
   }
 
-  public HttpResponse doDynamic(StaplerRequest req, StaplerResponse rsp) throws IOException {
+  public HttpResponse doDynamic(StaplerRequest2 req, StaplerResponse2 rsp) throws IOException {
 
     if (LOGGER.isLoggable(Level.FINEST)) {
       LOGGER.log(Level.FINEST, "Serving " + req.getRestOfPath());
@@ -253,7 +253,7 @@ public class SafeArchiveServingAction extends AssessmentReportBaseAction {
     }
 
     @Override
-    public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object node) throws IOException, ServletException {
+    public void generateResponse(StaplerRequest2 req, StaplerResponse2 rsp, Object node) throws IOException, ServletException {
       // serve the file without Content-Security-Policy
       long lastModified = file.lastModified();
       long length = file.length();
