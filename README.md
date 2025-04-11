@@ -1,3 +1,6 @@
+# DEPRECATED
+Rapid7 has stopped supporting containers. As such, this project will not receive new changes from Rapid7, though pull requests may still be accepted and new releases published on request.
+
 # InsightVM Container Image Scanner Jenkins Plugin
 
 [![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins/rapid7-insightvm-container-assessment-plugin/master)](https://ci.jenkins.io/job/Plugins/job/rapid7-insightvm-container-assessment-plugin/job/master/)
