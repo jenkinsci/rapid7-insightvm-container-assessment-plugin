@@ -1,5 +1,5 @@
 # DEPRECATED
-Rapid7 has stopped supporting containers. As such, this project will not receive new changes from Rapid7, though pull requests may still be accepted and new releases published on request.
+Rapid7 [has stopped supporting containers](https://docs.rapid7.com/insightvm/container-security-end-of-life-announcement/) as of March 5, 2025. As such, this project will not receive new changes from Rapid7, though pull requests may still be accepted and new releases published on request.
 
 # InsightVM Container Image Scanner Jenkins Plugin
 
